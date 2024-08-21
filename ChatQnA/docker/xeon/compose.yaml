@@ -26,7 +26,7 @@ services:
       TEI_ENDPOINT: ${TEI_EMBEDDING_ENDPOINT}
       HUGGINGFACEHUB_API_TOKEN: ${HUGGINGFACEHUB_API_TOKEN}
   tei-embedding-service:
-    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.5
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.4
     container_name: tei-embedding-server
     ports:
       - "6006:80"
@@ -69,7 +69,7 @@ services:
       TEI_EMBEDDING_ENDPOINT: ${TEI_EMBEDDING_ENDPOINT}
     restart: unless-stopped
   tei-reranking-service:
-    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.5
+    image: ghcr.io/huggingface/text-embeddings-inference:cpu-1.4
     container_name: tei-reranking-server
     ports:
       - "8808:80"
@@ -102,7 +102,7 @@ services:
       HF_HUB_ENABLE_HF_TRANSFER: 0
     restart: unless-stopped
   tgi-service:
-    image: ghcr.io/huggingface/text-generation-inference:sha-e4201f4-intel-cpu
+    image: ghcr.io/huggingface/text-generation-inference:sha-57b3495-intel-cpu
     container_name: tgi-service
     ports:
       - "9009:80"
@@ -160,23 +160,18 @@ services:
       - LLM_SERVICE_HOST_IP=${LLM_SERVICE_HOST_IP}
     ipc: host
     restart: always
-  chaqna-xeon-ui-server:
-    image: ${REGISTRY:-opea}/chatqna-ui:${TAG:-latest}
-    container_name: chatqna-xeon-ui-server
+  chaqna-xeon-conversation-ui-server:
+    image: opea/chatqna-conversation-ui:latest
+    container_name: chatqna-xeon-conversation-ui-server
+    environment:
+      - APP_BACKEND_SERVICE_ENDPOINT=${BACKEND_SERVICE_ENDPOINT}
+      - APP_DATA_PREP_SERVICE_URL=${DATAPREP_SERVICE_ENDPOINT}
+    ports:
+      - "5174:80"
     depends_on:
       - chaqna-xeon-backend-server
-    ports:
-      - "5173:5173"
-    environment:
-      - no_proxy=${no_proxy}
-      - https_proxy=${https_proxy}
-      - http_proxy=${http_proxy}
-      - CHAT_BASE_URL=${BACKEND_SERVICE_ENDPOINT}
-      - UPLOAD_FILE_BASE_URL=${DATAPREP_SERVICE_ENDPOINT}
-      - GET_FILE=${DATAPREP_GET_FILE_ENDPOINT}
-      - DELETE_FILE=${DATAPREP_DELETE_FILE_ENDPOINT}
     ipc: host
-    restart: always
+    restart: always 
 
 networks:
   default:
