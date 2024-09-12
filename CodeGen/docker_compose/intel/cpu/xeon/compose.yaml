@@ -9,7 +9,7 @@ services:
       - "8028:80"
     volumes:
       - "./data:/data"
-    shm_size: 1g
+    shm_size: 8g
     environment:
       no_proxy: ${no_proxy}
       http_proxy: ${http_proxy}
