@@ -162,7 +162,7 @@ services:
     ipc: host
     restart: always
   chaqna-xeon-conversation-ui-server:
-    image: opea/chatqna-conversation-ui:latest
+    image: opea/chatqna-conversation-ui:${TAG:-latest}
     container_name: chatqna-xeon-conversation-ui-server
     environment:
       - APP_BACKEND_SERVICE_ENDPOINT=${BACKEND_SERVICE_ENDPOINT}
