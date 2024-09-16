@@ -46,18 +46,18 @@ services:
       - LLM_SERVICE_HOST_IP=${LLM_SERVICE_HOST_IP}
     ipc: host
     restart: always
-  codegen-xeon-ui-server:
-    image: ${REGISTRY:-opea}/codegen-ui:${TAG:-latest}
-    container_name: codegen-xeon-ui-server
-    depends_on:
-      - codegen-xeon-backend-server
-    ports:
-      - "5173:5173"
+  codegen-xeon-react-ui-server:
+    image: ${REGISTRY:-opea}/codegen-react-ui:${TAG:-latest}
+    container_name: codegen-xeon-react-ui-server
     environment:
       - no_proxy=${no_proxy}
       - https_proxy=${https_proxy}
       - http_proxy=${http_proxy}
-      - BASIC_URL=${BACKEND_SERVICE_ENDPOINT}
+      - APP_CODE_GEN_URL=${BACKEND_SERVICE_ENDPOINT}
+    depends_on:
+      - codegen-xeon-backend-server
+    ports:
+      - "5174:80"
     ipc: host
     restart: always
 
